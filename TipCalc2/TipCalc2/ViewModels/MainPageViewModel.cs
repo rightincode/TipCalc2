@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using TipCalc2_core.Interfaces;
+//using TipCalc2_core.Interfaces;
 
 namespace TipCalc2.ViewModels
 {
@@ -8,12 +8,27 @@ namespace TipCalc2.ViewModels
     {
         private string totalTxt;
         private string tipTxt;
-        private readonly ITipCalculator _calculator;
+        private double tipPercent;
+        private double grandTotal;
 
-        public MainPageViewModel(ITipCalculator tipCalculator)
-        {
-            _calculator = tipCalculator;
+        public double Total { get; set; }
+
+        public double Tip { get; set; }
+
+        //*****remove after refactoring
+
+        //uncomment to make improve testability
+        //private readonly ITipCalculator _calculator;
+
+        public MainPageViewModel()
+        {            
         }
+
+        //uncomment to make improve testability
+        //public MainPageViewModel(ITipCalculator tipCalculator)
+        //{
+        //    _calculator = tipCalculator;
+        //}
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -31,11 +46,14 @@ namespace TipCalc2.ViewModels
                 try
                 {
                     string newValue = value;
-                    _calculator.Total = double.Parse(newValue);
+
+                    Total = double.Parse(newValue);
+                    //_calculator.Total = double.Parse(newValue);
                 }
                 catch (Exception)
                 {
-                    _calculator.Total = 0;
+                    Total = 0;
+                    //_calculator.Total = 0;
                 }
                 finally
                 {
@@ -55,11 +73,14 @@ namespace TipCalc2.ViewModels
                 try
                 {
                     string newValue = value;
-                    _calculator.Tip = double.Parse(newValue);
+
+                    Tip = double.Parse(newValue);
+                    //_calculator.Tip = double.Parse(newValue);
                 }
                 catch (Exception)
                 {
-                    _calculator.Tip = 0;
+                    Tip = 0;
+                    //_calculator.Tip = 0;
                 }
                 finally
                 {
@@ -70,14 +91,20 @@ namespace TipCalc2.ViewModels
         
         public string TipPercentTxt
         {
-            get { return _calculator.TipPercent.ToString(); }
+            get { return tipPercent.ToString(); }
+
+            //get { return _calculator.TipPercent.ToString(); }
         }
 
         public double TipPercent
         {
-            get { return _calculator.TipPercent; }
+            get { return tipPercent; }
+
+            //get { return _calculator.TipPercent; }
+
             set {
-                _calculator.TipPercent = value;
+                tipPercent = value;
+                //_calculator.TipPercent = value;
                 CalcTip();
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TipPercent"));
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TipPercentTxt"));
@@ -86,20 +113,45 @@ namespace TipCalc2.ViewModels
 
         public string GrandTotalTxt
         {
-            get { return _calculator.GrandTotal.ToString(); }
+            get { return grandTotal.ToString(); }
+
+            //get { return _calculator.GrandTotal.ToString(); }
         }
 
         public void CalcTip()
         {
-            _calculator.CalcTip();
-            tipTxt = _calculator.Tip.ToString();
+            if (tipPercent > 0)
+            {
+                Tip = Total * (tipPercent / 100);
+            }
+            else
+            {
+                Tip = 0;
+            }
+            tipTxt = Tip.ToString();
+
+            //_calculator.CalcTip();
+            //tipTxt = _calculator.Tip.ToString();
+
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TipTxt"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("GrandTotalTxt"));
         }
 
         public void CalcTipPercentage()
         {
-            _calculator.CalcTipPercentage();
+            if (Total > 0)
+            {
+                tipPercent = (Tip / Total) * 100;
+            }
+            else
+            {
+                tipPercent = 0;
+            }
+
+            grandTotal = Total + Tip;
+
+            //_calculator.CalcTipPercentage();
+
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TipPercent"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TipPercentTxt"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("GrandTotalTxt"));
