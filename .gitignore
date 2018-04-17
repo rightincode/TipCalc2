@@ -259,3 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/MigrationBackup/20424d33/TipCalc2_tests/TipCalc2_tests.csproj
+/MigrationBackup/20424d33/TipCalc2_tests/packages.config
+/MigrationBackup/20424d33/TipCalc2_tests/NuGetUpgradeLog.html
