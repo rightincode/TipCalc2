@@ -7,22 +7,13 @@ namespace TipCalc2
 {
     public partial class MainPage : ContentPage
     {
-
         public MainPageViewModel VM { get; }
 
-        public MainPage()
+        public MainPage(ITipCalculator tipCalculator)
         {
             InitializeComponent();
-            VM = new MainPageViewModel();
+            VM = new MainPageViewModel(tipCalculator);
             BindingContext = VM;
         }
-
-        //uncomment to make improve testability
-        //public MainPage(ITipCalculator tipCalculator)
-        //{
-        //    InitializeComponent();
-        //    vm = new MainPageViewModel(tipCalculator);
-        //    BindingContext = VM;
-        //}
     }
 }

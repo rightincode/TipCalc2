@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="TipCalculatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TipCalculatorViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TipCalc2\TipCalc2.csproj">
